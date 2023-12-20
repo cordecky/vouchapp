@@ -1,0 +1,28 @@
+/* Set the background to dark and text to white for the entire page */
+body {
+    background-color: #333; /* Dark background */
+    color: white; /* White text */
+    font-family: 'Arial', sans-serif; /* Change as needed */
+}
+
+/* Style for buttons, input fields, and other form elements */
+button, input, select, textarea {
+    background-color: #444; /* Dark background for elements */
+    border: none;
+    color: white; /* White text */
+    font-family: 'Arial', sans-serif; /* Change as needed */
+    border-radius: 0; /* Square shapes */
+    padding: 10px; /* Space between text and border */
+}
+
+/* Additional styling for specific types of inputs if needed */
+input[type="button"], input[type="submit"], input[type="reset"] {
+    background-color: #555; /* Slightly different color for buttons */
+    padding: 10px; /* Space between text and border */
+}
+
+/* Style for checkboxes and radio buttons */
+input[type="checkbox"], input[type="radio"] {
+    accent-color: #777; /* Color for checkbox and radio */
+    padding: 5px; /* Space around checkbox/radio */
+}
