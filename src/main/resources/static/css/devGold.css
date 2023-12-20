@@ -1,0 +1,93 @@
+/* General page styles */
+body {
+    font-family: 'Arial', sans-serif;
+    color: white;
+    background-color: #000; /* Black background */
+    margin: 0;
+    padding: 0;
+}
+
+/* Style for the tab container */
+.tab {
+    text-align: center; /* Centering the buttons */
+    display: flex; /* Use flexbox to layout the .tablinks side by side */
+    justify-content: center; /* Center .tablinks in the flex container */}
+
+/* Style for the tab links to mimic the menu appearance */
+.tablinks {
+    background-color: transparent; /* Transparent background */
+    border: none; /* No border */
+    color: #857d75; /* Initial color for the tab links */
+    font-size: 16px; /* Font size for the tab links */
+    transition: color 0.4s ease; /* Transition effect for color change */
+    outline: none; /* Remove outline on focus */
+    cursor: pointer; /* Cursor to pointer to indicate clickable */
+    position: relative; /* Required for absolute positioning of pseudo-elements */
+    padding: 20px 30px; /* Increase padding to make the clickable area larger */
+    display: block; /* Make it a block-level element */
+    width: 100%; /* Make it as wide as its container */
+    box-sizing: border-box; /* Make sure padding is included in the width */
+    text-align: center; /* Center the text inside */
+}
+
+/* After pseudo-element for the underline effect */
+.tablinks::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: -2px; /* Start below the text */
+    width: 100%;
+    height: 2px;
+    background-color: #FFD700; /* Gold color for the underline */
+    opacity: 0; /* Start with an invisible underline */
+    transform: scaleY(0); /* Start from no height */
+    transition: transform 0.7s ease, opacity 0.7s ease; /* Animate both transform and opacity */
+    transform-origin: bottom; /* Set the origin of the transform to the bottom */
+}
+
+/* Change the state when hovering or focusing to make the underline visible and move it up */
+.tablinks:hover::after, .tablinks:focus::after {
+    opacity: 1; /* Make the underline fully visible */
+    transform: scaleY(1); /* Scale up to full height */
+}
+
+/* Style for the active tab link */
+.tablinks.active {
+    color: #FFD700; /* Gold color for the active link */
+    /* The underline for the active link can be always visible */
+}
+
+/* Style for the tab content */
+.tabcontent {
+    display: none; /* Hide the tab content by default */
+    padding: 20px; /* Padding for the tab content */
+}
+
+/* Assuming that 'navbar_menu' is the class of your UL element */
+.navbar_menu {
+    display: flex;
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    justify-content: center; /* This will center the menu items if there's extra space */
+}
+
+/* Styling for LI items */
+.navbar_menu li {
+    margin: 0; /* Adjust as needed */
+    padding: 0; /* Adjust as needed */
+    display: flex; /* This will allow you to center the link inside the LI if needed */
+    align-items: center; /* This will vertically center the link inside the LI */
+}
+
+/* Styling for A elements */
+.navbar_menu a {
+    display: flex; /* Make the <a> tags flex containers as well */
+    align-items: center; /* This will vertically center the text inside the <a> tag */
+    justify-content: center; /* This will horizontally center the text inside the <a> tag */
+    flex-grow: 1; /* This will make the <a> tags fill up the LI container */
+    padding: 20px 30px; /* Increase padding to make the clickable area larger */
+    text-decoration: none; /* Optional: removes the underline from links */
+    color: inherit; /* Optional: makes the link color the same as the LI */
+    transition: color 0.4s ease; /* Transition effect for color change */
+}

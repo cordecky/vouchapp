@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Formularz Voucher</title>
+    <!--link rel="stylesheet" type="text/css" th:href="@{/css/gold.css}" /-->
+</head>
+<body>
+<div>
+    <h1>Wygeneruj swój Voucher</h1><br>
+    <!--ul class="navbar_menu">
+        <li class="menu-item">
+            <button class="tablinks" onclick="openForm(event, 'VoucherName')">Voucher na Zabieg</button>
+        </li>
+        <li class="menu-item">
+            <button class="tablinks" onclick="openForm(event, 'VoucherValue')">Voucher o Wartości</button>
+        </li>
+    </ul-->
+
+    <div id="VoucherName" class="tabcontent">
+        <h3>Voucher na Zabieg</h3>
+        <form th:action="@{/generateVoucher}" th:object="${voucher}" method="post">
+            <input type="text" th:field="*{name}" placeholder="Imię klienta"/>
+            <select th:field="*{treatment}">
+                <option th:each="treatment : ${treatments}" th:value="${treatment}" th:text="${treatment}"></option>
+            </select>
+            <button type="submit">Wygeneruj Voucher na Zabieg</button>
+        </form>
+    </div>
+
+    <div id="VoucherValue" class="tabcontent">
+        <h3>Voucher o Wartości</h3>
+        <form th:action="@{/generateVoucher}" th:object="${voucher}" method="post">
+            <input type="text" th:field="*{name}" placeholder="Imię klienta"/>
+            <input type="number" th:field="*{value}" placeholder="Wartość Vouchera"/>
+            <button type="submit">Wygeneruj Voucher o Wartości</button>
+        </form>
+    </div>
+</div>
+
+
+<script>
+//function openForm(evt, formName) {
+//    var i, tabcontent, tablinks;
+//    tabcontent = document.getElementsByClassName("tabcontent");
+//    for (i = 0; i < tabcontent.length; i++) {
+//        tabcontent[i].style.display = "none";
+//    }
+//    tablinks = document.getElementsByClassName("tablinks");
+//    for (i = 0; i < tablinks.length; i++) {
+//        tablinks[i].className = tablinks[i].className.replace(" active", "");
+//    }
+//    document.getElementById(formName).style.display = "block";
+//    evt.currentTarget.className += " active";
+//}
+
+//document.addEventListener('DOMContentLoaded', function() {
+//    if (document.getElementsByClassName("tablinks").length > 0) {
+//        openForm(event, 'VoucherName');
+//    }
+//});
+</script>
+
+</body>
+</html>
+
