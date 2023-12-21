@@ -1,0 +1,41 @@
+/* General style for the entire page */
+body {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box; /* Helps maintain consistent sizing */
+}
+
+/* Style for the main container */
+.container {
+    display: flex; /* Using flexbox to split the content */
+    height: 100vh; /* 100% of the viewport height */
+    padding: 20px; /* Margin from the screen edges */
+}
+
+/* Style for each section */
+.section {
+    flex: 1; /* Each section occupies an equal part of the space */
+    margin: 0 10px; /* Margin between sections */
+}
+
+/* Style for the left section with the image */
+.section-left {
+    position: fixed; /* Fixed positioning */
+    top: 20px; /* Distance from the top */
+    left: 10%; /* Distance from the left */
+    right: 50%; /* Half of the container width */
+    bottom: 20px; /* Distance from the bottom */
+    overflow: hidden; /* Prevents displaying outside the section */
+}
+
+/* Style for the right section */
+.section-right {
+    margin-left: 50%; /* Starts at half the width of the container */
+    overflow: auto; /* Enables scrolling */
+    height: 100vh; /* Full screen height */
+}
+
+.fixed-image {
+    max-width: 100%; /* Limits the width to the section area */
+    max-height: 100%; /* Limits the height to the section area */
+}

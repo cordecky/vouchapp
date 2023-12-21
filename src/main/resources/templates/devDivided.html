@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="pl" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Vouchapp</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/devDivided.css}">
+</head>
+<body>
+
+<div class="container">
+    <div class="section section-left">
+        <img src="../images/thumbnail.png" alt="Voucher thumbnail">
+    </div>
+    <div class="section section-right">
+        <div id="VoucherName" class="tabcontent">
+            <h3>Voucher na Zabieg</h3>
+            <form th:action="@{/generateVoucher}" th:object="${voucher}" method="post">
+                <input type="text" th:field="*{name}" placeholder="Imię klienta"/>
+                <select th:field="*{treatment}">
+                    <option th:each="treatment : ${treatments}" th:value="${treatment}" th:text="${treatment}"></option>
+                </select>
+                <button type="submit">Wygeneruj Voucher na Zabieg</button>
+            </form>
+        </div>
+
+        <div id="VoucherValue" class="tabcontent">
+            <h3>Voucher o Wartości</h3>
+            <form th:action="@{/generateVoucher}" th:object="${voucher}" method="post">
+                <input type="text" th:field="*{name}" placeholder="Imię klienta"/>
+                <input type="number" th:field="*{value}" placeholder="Wartość Vouchera"/>
+                <button type="submit">Wygeneruj Voucher o Wartości</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
+

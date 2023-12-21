@@ -30,7 +30,7 @@ public class FormController {
     public String showForm(Model model) {
         model.addAttribute("voucher", new Voucher());
         model.addAttribute("treatments", treatmentService.getTreatments().stream().map(Treatment::getName).toArray());
-        return "devForm";
+        return "devDivided";
     }
 
     @PostMapping("/generateVoucher")
