@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="pl" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Vouchapp</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/devTypes.css}">
+</head>
+<body>
+<script src="https://kit.fontawesome.com/24d045adf1.js" crossorigin="anonymous"></script>
+
+<div class="button-grid">
+    <button class="icon-button" onclick="buttonClicked('Przycisk 1')">
+        <i class="fa-solid fa-spa fa-3x"></i>
+        <span>Zabieg</span>
+    </button>
+    <button class="icon-button" onclick="buttonClicked('Przycisk 2')">
+        <i class="fa-solid fa-money-bill-1 fa-3x"></i>
+        <span>Kwota</span>
+    </button>
+    <button class="icon-button" onclick="buttonClicked('Przycisk 3')">
+        <i class="fa-solid fa-droplet fa-3x"></i>
+        <span>Łaźnia</span>
+    </button>
+    <button class="icon-button" onclick="buttonClicked('Przycisk 4')">
+        <i class="fa-regular fa-star fa-3x"></i>
+        <span>Speciale</span>
+    </button>
+</div>
+
+<script>
+    function buttonClicked(buttonName) {
+        console.log(buttonName + ' has been pressed');
+    }
+</script>
+
+</body>
+</html>
+

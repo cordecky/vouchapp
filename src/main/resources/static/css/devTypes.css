@@ -1,0 +1,38 @@
+.button-grid {
+    display: grid;
+    grid-template-columns: repeat(2, auto); /* 2 kolumny */
+    justify-content: center;
+    gap: 10px; /* Odstęp między przyciskami */
+}
+
+.icon-button {
+    display: flex;
+    flex-direction: column; /* Układ pionowy */
+    align-items: center;
+    justify-content: center;
+    width: 100px; /* Szerokość przycisku */
+    height: 100px; /* Wysokość przycisku, dostosowana do ikony i tekstu */
+    border: 1px solid #ccc; /* Opcjonalna ramka */
+    background-color: white; /* Opcjonalne tło */
+    padding: 5px; /* Opcjonalna odstęp wewnątrz przycisku */
+    text-align: center; /* Wycentrowanie tekstu */
+    background-color: #4CAF50; /* Kolor tła */
+    color: white; /* Kolor tekstu */
+    font-size: 16px; /* Rozmiar tekstu */
+ }
+
+.icon-button i {
+    margin-bottom: 5px; /* Odstęp między ikoną a tekstem */
+}
+
+ /* Styl dla hover */
+ .icon-button:hover {
+     background-color: #45a049; /* Ciemniejszy kolor tła przy hover */
+ }
+
+ /* Styl dla aktywnego stanu (kliknięcie) */
+ .icon-button:active {
+     background-color: #397d35; /* Jeszcze ciemniejszy kolor tła przy kliknięciu */
+ }
+
+
