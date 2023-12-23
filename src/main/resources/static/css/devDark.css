@@ -16,6 +16,7 @@ button, input, select, textarea {
     font-family: 'Arial', sans-serif; /* Change as needed */
     border-radius: 0; /* Square shapes */
     padding: 10px; /* Space between text and border */
+    margin-left: 10px; /* Space between elements */
 }
 
 /* Additional styling for specific types of inputs if needed */
@@ -24,16 +25,9 @@ input[type="button"], input[type="submit"], input[type="reset"] {
     padding: 10px; /* Space between text and border */
 }
 
-/* Button hover darker */
-button:hover {
-    background-color: #804d00; /* Darker background for buttons */
+.cls-pressed {
+    border: 3px solid #fff;
 }
-
-/* Lighter button when active */
-button:active {
-    background-color: #804d00; /* Jeszcze ciemniejszy kolor tła przy kliknięciu */
-}
-
 
 /* Style for checkboxes and radio buttons */
 input[type="checkbox"], input[type="radio"] {
@@ -41,11 +35,15 @@ input[type="checkbox"], input[type="radio"] {
     padding: 5px; /* Space around checkbox/radio */
 }
 
+.right-form {
+    margin-left: 10px;
+}
+
 /* Style for the main container */
 .form-container {
     /* Using display: flex; flexbox to split the content */
     /* height: 100vh; 100% of the viewport height */
-    padding: 20px; /* Margin from the screen edges */
+    padding: 0px; /* Margin from the screen edges */
     position: relative;
     overflow: hidden;
     height: 200px; /* Ustaw wysokość kontenera, dostosuj do swoich potrzeb */
@@ -68,7 +66,7 @@ input[type="checkbox"], input[type="radio"] {
 /* Style for the left section with the image */
 .section-left {
     position: fixed; /* Fixed positioning */
-    top: 20px; /* Distance from the top */
+    top: 20%; /* Distance from the top */
     left: 10%; /* Distance from the left */
     right: 50%; /* Half of the container width */
     bottom: 20px; /* Distance from the bottom */
@@ -77,10 +75,9 @@ input[type="checkbox"], input[type="radio"] {
 
 /* Style for the right section */
 .section-right {
-    margin-left: 50%; /* Starts at half the width of the container */
+    margin-left: 51%; /* Starts at half the width of the container */
     overflow: auto; /* Enables scrolling */
     height: 100vh; /* Full screen height */
-    padding: 10px
 }
 
 .fixed-image {
@@ -91,7 +88,7 @@ input[type="checkbox"], input[type="radio"] {
 .button-grid {
     display: grid;
     grid-template-columns: repeat(2, auto); /* 2 kolumny */
-    justify-content: center;
+    justify-content: left;
     gap: 10px; /* Odstęp między przyciskami */
 }
 
@@ -100,10 +97,9 @@ input[type="checkbox"], input[type="radio"] {
     flex-direction: column; /* Układ pionowy */
     align-items: center;
     justify-content: center;
-    width: 100px; /* Szerokość przycisku */
-    height: 100px; /* Wysokość przycisku, dostosowana do ikony i tekstu */
-    border: 1px solid #ccc; /* Opcjonalna ramka */
-    background-color: #CDAC75; /* Opcjonalne tło */
+    width: 200px; /* Szerokość przycisku */
+    height: 200px; /* Wysokość przycisku, dostosowana do ikony i tekstu */
+    background-color: #cfb078; /* Opcjonalne tło */
     padding: 5px; /* Opcjonalna odstęp wewnątrz przycisku */
     text-align: center; /* Wycentrowanie tekstu */
     color: white; /* Kolor tekstu */

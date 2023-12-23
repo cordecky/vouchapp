@@ -7,43 +7,47 @@
 
 </head>
 <body>
-<div><h1>Vouchapp</h1></div>
+<div class="navbar_menu">
+    <h1>Vouchapp</h1>
+</div>
 <div>
     <div class="container">
         <div class="section section-left">
             <img src="../images/thumbnail.png" alt="Voucher thumbnail">
         </div>
         <div class="section section-right">
-            <h2>Wybierz rodzaj Vouchera</h2>
-            <div class="button-grid">
-                <button class="cls-btn-icon" id="btn-treatment">
-                    <i class="fa-solid fa-spa fa-3x"></i>
-                    <span>Zabieg</span>
-                </button>
-                <button class="cls-btn-icon" id="btn-value">
-                    <i class="fa-solid fa-money-bill-1 fa-3x"></i>
-                    <span>Kwota</span>
-                </button>
-            </div>
-            <div class="form-container">
-                <div id="div-form-treatment" class="cls-fadeable" >
-                    <h3>Voucher na Zabieg</h3>
-                    <form th:action="@{/generateVoucher}" th:object="${voucher}" method="post">
-                        <input type="input-treatment-name" th:field="*{name}" placeholder="Imię klienta"/>
-                        <select th:field="*{treatment}">
-                            <option th:each="treatment : ${treatments}" th:value="${treatment}" th:text="${treatment}"></option>
-                        </select>
-                        <button type="submit">Wygeneruj Voucher na zabieg</button>
-                    </form>
+            <div class="right-form">
+                <h2>Wybierz rodzaj Vouchera</h2>
+                <div class="button-grid">
+                    <button class="cls-btn-icon" id="btn-treatment">
+                        <i class="fa-solid fa-spa fa-3x"></i>
+                        <span>Zabieg</span>
+                    </button>
+                    <button class="cls-btn-icon" id="btn-value">
+                        <i class="fa-solid fa-money-bill-1 fa-3x"></i>
+                        <span>Kwota</span>
+                    </button>
                 </div>
+                <div class="form-container">
+                    <div id="div-form-treatment" class="cls-fadeable" >
+                        <h3>Voucher na Zabieg</h3>
+                        <form th:action="@{/generateVoucher}" th:object="${voucher}" method="post">
+                            <input id="input-treatment-name" type="text" th:field="*{name}" placeholder="Imię klienta"/>
+                            <select th:field="*{treatment}">
+                                <option th:each="treatment : ${treatments}" th:value="${treatment}" th:text="${treatment}"></option>
+                            </select>
+                            <button type="submit">Wygeneruj Voucher na zabieg</button>
+                        </form>
+                    </div>
 
-                <div id="div-form-value" class="cls-fadeable">
-                    <h3>Voucher o Wartości</h3>
-                    <form th:action="@{/generateVoucher}" th:object="${voucher}" method="post">
-                        <input id="input-value-name" type="text" th:field="*{name}" placeholder="Imię klienta"/>
-                        <input id="input-value-value" type="number" th:field="*{value}" placeholder="Wartość Vouchera"/>
-                        <button type="submit">Wygeneruj Voucher o wartości</button>
-                    </form>
+                    <div id="div-form-value" class="cls-fadeable">
+                        <h3>Voucher o Wartości</h3>
+                        <form th:action="@{/generateVoucher}" th:object="${voucher}" method="post">
+                            <input id="input-value-name" type="text" th:field="*{name}" placeholder="Imię klienta"/>
+                            <input id="input-value-value" type="number" th:field="*{value}" placeholder="Wartość Vouchera"/>
+                            <button type="submit">Wygeneruj Voucher o wartości</button>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
@@ -61,11 +65,10 @@
     var input2 = document.getElementById('input-value-value');
     var input3 = document.getElementById('input-treatment-name');
     var isAnimating = false; // zmienna do śledzenia stanu animacji
-    console.log('isAnimating = ' + isAnimating);
     currentForm = 0;
 
     function updateState(showForm1) {
-        if(isAnimating || (showForm1 && currentForm == 1) || (!showForm1 && currentForm == 2)) {
+        if(isAnimating) {
             return;
         }
         isAnimating = true;
@@ -74,6 +77,7 @@
             //Zabieg
             currentForm = 1;
             form1.classList.add('fade-in-right');
+            btnForm1.classList.add('cls-pressed');
             form1.style.zIndex = 2;
             form2.style.zIndex = 1;
             //If opacity of form2 is not 0
@@ -82,11 +86,15 @@
                 if(input1 != null) input1.value = "";
                 if(input2 != null) input2.value = "";
                 form2.classList.add('fade-out-left');
+                btnForm2.classList.remove('cls-pressed');
+            } else {
+                console.log("form2 opacity is 0");
             }
         } else {
             //Kwota
             currentForm = 2;
             form2.classList.add('fade-in-right');
+            btnForm2.classList.add('cls-pressed');
             form2.style.zIndex = 2;
             form1.style.zIndex = 1;
             //If opacity of form1 is not 0
@@ -94,6 +102,9 @@
                 //Take input
                 if(input3 != null) input3.value = "";
                 form1.classList.add('fade-out-left');
+                btnForm1.classList.remove('cls-pressed');
+            } else {
+                console.log("form1 opacity is 0");
             }
         }
 
@@ -115,7 +126,6 @@
             isAnimating = false;
         }, 500); // 500 ms = czas trwania animacji
     }
-
 
     // Funkcje do pokazywania formularzy
     function showForm1() {
