@@ -7,59 +7,127 @@
 
 </head>
 <body>
+<div><h1>Vouchapp</h1></div>
 <div>
-    <h1>Wygeneruj swój Voucher</h1><br>
-    <!--ul class="navbar_menu">
-        <li class="menu-item">
-            <button class="tablinks" onclick="openForm(event, 'VoucherName')">Voucher na Zabieg</button>
-        </li>
-        <li class="menu-item">
-            <button class="tablinks" onclick="openForm(event, 'VoucherValue')">Voucher o Wartości</button>
-        </li>
-    </ul-->
+    <div class="container">
+        <div class="section section-left">
+            <img src="../images/thumbnail.png" alt="Voucher thumbnail">
+        </div>
+        <div class="section section-right">
+            <h2>Wybierz rodzaj Vouchera</h2>
+            <div class="button-grid">
+                <button class="cls-btn-icon" id="btn-treatment">
+                    <i class="fa-solid fa-spa fa-3x"></i>
+                    <span>Zabieg</span>
+                </button>
+                <button class="cls-btn-icon" id="btn-value">
+                    <i class="fa-solid fa-money-bill-1 fa-3x"></i>
+                    <span>Kwota</span>
+                </button>
+            </div>
+            <div class="form-container">
+                <div id="div-form-treatment" class="cls-fadeable" >
+                    <h3>Voucher na Zabieg</h3>
+                    <form th:action="@{/generateVoucher}" th:object="${voucher}" method="post">
+                        <input type="input-treatment-name" th:field="*{name}" placeholder="Imię klienta"/>
+                        <select th:field="*{treatment}">
+                            <option th:each="treatment : ${treatments}" th:value="${treatment}" th:text="${treatment}"></option>
+                        </select>
+                        <button type="submit">Wygeneruj Voucher na zabieg</button>
+                    </form>
+                </div>
 
-    <div id="VoucherName" class="tabcontent">
-        <h3>Voucher na Zabieg</h3>
-        <form th:action="@{/generateVoucher}" th:object="${voucher}" method="post">
-            <input type="text" th:field="*{name}" placeholder="Imię klienta"/>
-            <select th:field="*{treatment}">
-                <option th:each="treatment : ${treatments}" th:value="${treatment}" th:text="${treatment}"></option>
-            </select>
-            <button type="submit">Wygeneruj Voucher na Zabieg</button>
-        </form>
-    </div>
-
-    <div id="VoucherValue" class="tabcontent">
-        <h3>Voucher o Wartości</h3>
-        <form th:action="@{/generateVoucher}" th:object="${voucher}" method="post">
-            <input type="text" th:field="*{name}" placeholder="Imię klienta"/>
-            <input type="number" th:field="*{value}" placeholder="Wartość Vouchera"/>
-            <button type="submit">Wygeneruj Voucher o Wartości</button>
-        </form>
+                <div id="div-form-value" class="cls-fadeable">
+                    <h3>Voucher o Wartości</h3>
+                    <form th:action="@{/generateVoucher}" th:object="${voucher}" method="post">
+                        <input id="input-value-name" type="text" th:field="*{name}" placeholder="Imię klienta"/>
+                        <input id="input-value-value" type="number" th:field="*{value}" placeholder="Wartość Vouchera"/>
+                        <button type="submit">Wygeneruj Voucher o wartości</button>
+                    </form>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 
 
+<script src="https://kit.fontawesome.com/24d045adf1.js" crossorigin="anonymous"></script>
 <script>
-//function openForm(evt, formName) {
-//    var i, tabcontent, tablinks;
-//    tabcontent = document.getElementsByClassName("tabcontent");
-//    for (i = 0; i < tabcontent.length; i++) {
-//        tabcontent[i].style.display = "none";
-//    }
-//    tablinks = document.getElementsByClassName("tablinks");
-//    for (i = 0; i < tablinks.length; i++) {
-//        tablinks[i].className = tablinks[i].className.replace(" active", "");
-//    }
-//    document.getElementById(formName).style.display = "block";
-//    evt.currentTarget.className += " active";
-//}
+    var btnForm1 = document.getElementById('btn-treatment');
+    var btnForm2 = document.getElementById('btn-value');
+    var form1 = document.getElementById('div-form-treatment');
+    var form2 = document.getElementById('div-form-value');
+    var input1 = document.getElementById('input-value-name');
+    var input2 = document.getElementById('input-value-value');
+    var input3 = document.getElementById('input-treatment-name');
+    var isAnimating = false; // zmienna do śledzenia stanu animacji
+    console.log('isAnimating = ' + isAnimating);
+    currentForm = 0;
 
-//document.addEventListener('DOMContentLoaded', function() {
-//    if (document.getElementsByClassName("tablinks").length > 0) {
-//        openForm(event, 'VoucherName');
-//    }
-//});
+    function updateState(showForm1) {
+        if(isAnimating || (showForm1 && currentForm == 1) || (!showForm1 && currentForm == 2)) {
+            return;
+        }
+        isAnimating = true;
+
+        if (showForm1) {
+            //Zabieg
+            currentForm = 1;
+            form1.classList.add('fade-in-right');
+            form1.style.zIndex = 2;
+            form2.style.zIndex = 1;
+            //If opacity of form2 is not 0
+            if(form2.style.opacity != 0) {
+                //Take input
+                if(input1 != null) input1.value = "";
+                if(input2 != null) input2.value = "";
+                form2.classList.add('fade-out-left');
+            }
+        } else {
+            //Kwota
+            currentForm = 2;
+            form2.classList.add('fade-in-right');
+            form2.style.zIndex = 2;
+            form1.style.zIndex = 1;
+            //If opacity of form1 is not 0
+            if(form1.style.opacity != 0) {
+                //Take input
+                if(input3 != null) input3.value = "";
+                form1.classList.add('fade-out-left');
+            }
+        }
+
+        // Usuń klasy animacji i odblokuj kolejną animację po zakończeniu obecnej
+        setTimeout(() => {
+            form1.classList.remove('fade-out-left', 'fade-in-right');
+            form2.classList.remove('fade-out-left', 'fade-in-right');
+
+            // Kontrola widoczności - po zakończeniu animacji
+            if(showForm1) {
+                form1.style.opacity = 1; // Ustaw element na widoczny
+                form2.style.opacity = 0; // Ukryj drugi element
+            } else {
+                form2.style.opacity = 1; // Ustaw element na widoczny
+                form1.style.opacity = 0; // Ukryj pierwszy element
+            }
+
+
+            isAnimating = false;
+        }, 500); // 500 ms = czas trwania animacji
+    }
+
+
+    // Funkcje do pokazywania formularzy
+    function showForm1() {
+        updateState(true);
+    }
+
+    function showForm2() {
+        updateState(false);
+    }
+
+    btnForm1.addEventListener('click', showForm1);
+    btnForm2.addEventListener('click', showForm2);
 </script>
 
 </body>

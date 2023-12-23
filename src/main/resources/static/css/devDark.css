@@ -1,13 +1,16 @@
-/* Set the background to dark and text to white for the entire page */
+/* General style for the entire page */
 body {
     background-color: #333; /* Dark background */
     color: white; /* White text */
     font-family: 'Arial', sans-serif; /* Change as needed */
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box; /* Helps maintain consistent sizing */
 }
 
 /* Style for buttons, input fields, and other form elements */
 button, input, select, textarea {
-    background-color: #444; /* Dark background for elements */
+    background-color: #444; /* Darker background for elements */
     border: none;
     color: white; /* White text */
     font-family: 'Arial', sans-serif; /* Change as needed */
@@ -17,12 +20,116 @@ button, input, select, textarea {
 
 /* Additional styling for specific types of inputs if needed */
 input[type="button"], input[type="submit"], input[type="reset"] {
-    background-color: #555; /* Slightly different color for buttons */
+    background-color: #b37400; /* Slightly different color for buttons */
     padding: 10px; /* Space between text and border */
 }
+
+/* Button hover darker */
+button:hover {
+    background-color: #804d00; /* Darker background for buttons */
+}
+
+/* Lighter button when active */
+button:active {
+    background-color: #804d00; /* Jeszcze ciemniejszy kolor tła przy kliknięciu */
+}
+
 
 /* Style for checkboxes and radio buttons */
 input[type="checkbox"], input[type="radio"] {
     accent-color: #777; /* Color for checkbox and radio */
     padding: 5px; /* Space around checkbox/radio */
+}
+
+/* Style for the main container */
+.form-container {
+    /* Using display: flex; flexbox to split the content */
+    /* height: 100vh; 100% of the viewport height */
+    padding: 20px; /* Margin from the screen edges */
+    position: relative;
+    overflow: hidden;
+    height: 200px; /* Ustaw wysokość kontenera, dostosuj do swoich potrzeb */
+}
+
+.cls-fadeable {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    opacity: 0; /* Początkowo formularze są niewidoczne */
+    transition: opacity 0.5s, transform 0.5s; /* Czas trwania animacji */
+}
+
+/* Style for each section */
+.section {
+    flex: 1; /* Each section occupies an equal part of the space */
+    margin: 0 10px; /* Margin between sections */
+}
+
+/* Style for the left section with the image */
+.section-left {
+    position: fixed; /* Fixed positioning */
+    top: 20px; /* Distance from the top */
+    left: 10%; /* Distance from the left */
+    right: 50%; /* Half of the container width */
+    bottom: 20px; /* Distance from the bottom */
+    overflow: hidden; /* Prevents displaying outside the section */
+}
+
+/* Style for the right section */
+.section-right {
+    margin-left: 50%; /* Starts at half the width of the container */
+    overflow: auto; /* Enables scrolling */
+    height: 100vh; /* Full screen height */
+    padding: 10px
+}
+
+.fixed-image {
+    max-width: 100%; /* Limits the width to the section area */
+    max-height: 100%; /* Limits the height to the section area */
+}
+
+.button-grid {
+    display: grid;
+    grid-template-columns: repeat(2, auto); /* 2 kolumny */
+    justify-content: center;
+    gap: 10px; /* Odstęp między przyciskami */
+}
+
+.cls-btn-icon {
+    display: flex;
+    flex-direction: column; /* Układ pionowy */
+    align-items: center;
+    justify-content: center;
+    width: 100px; /* Szerokość przycisku */
+    height: 100px; /* Wysokość przycisku, dostosowana do ikony i tekstu */
+    border: 1px solid #ccc; /* Opcjonalna ramka */
+    background-color: #CDAC75; /* Opcjonalne tło */
+    padding: 5px; /* Opcjonalna odstęp wewnątrz przycisku */
+    text-align: center; /* Wycentrowanie tekstu */
+    color: white; /* Kolor tekstu */
+    font-size: 16px; /* Rozmiar tekstu */
+ }
+
+.icon-button i {
+    margin-bottom: 5px; /* Odstęp między ikoną a tekstem */
+}
+
+/* Animacje */
+@keyframes fadeInRight {
+    from { transform: translateX(100%); opacity: 0; }
+    to { transform: translateX(0); opacity: 1; }
+}
+
+@keyframes fadeOutLeft {
+    from { transform: translateX(0); opacity: 1; }
+    to { transform: translateX(-100%); opacity: 0; }
+}
+
+/* Klasy do zarządzania stanem */
+.fade-in-right {
+    animation: fadeInRight 0.5s forwards; /* Animacja fadeInRight zostanie uruchomiona */
+}
+
+.fade-out-left {
+    animation: fadeOutLeft 0.5s forwards; /* Animacja fadeOutLeft zostanie uruchomiona */
 }
