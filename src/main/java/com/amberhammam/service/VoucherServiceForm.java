@@ -16,9 +16,9 @@ public class VoucherServiceForm implements VoucherService {
     public byte[] createPdfVoucher(Voucher voucher) {
         if (voucher.getTreatment() != null)
             return pdfGenerator.generatePdfTreatment(voucher);
-        else if (voucher.getValue() != null)
+        else if (voucher.getCustomValue() != null || voucher.getSelectedValue() != null)
             return pdfGenerator.generatePdfValue(voucher);
         else
-            throw new IllegalArgumentException("Nieprawidłowy voucher");
+            throw new IllegalArgumentException("Nieprawidłowe dane voucheru: " + voucher);
     }
 }

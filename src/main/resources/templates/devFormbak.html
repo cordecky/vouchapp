@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Formularz Voucher</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/devDark.css}">
+
+</head>
+<body>
+<div class="navbar_menu">
+    <h1>Vouchapp</h1>
+</div>
+<div>
+    <div class="container">
+        <div class="section section-left">
+            <img src="../images/thumbnail.png" alt="Voucher thumbnail">
+        </div>
+        <div class="section section-right">
+            <div class="right-form">
+                <h2>Wybierz rodzaj Vouchera</h2>
+                <div class="button-grid">
+                    <button class="cls-btn-icon" id="btn-treatment">
+                        <i class="fa-solid fa-spa fa-3x"></i>
+                        <span>Zabieg</span>
+                    </button>
+                    <button class="cls-btn-icon" id="btn-value">
+                        <i class="fa-solid fa-money-bill-1 fa-3x"></i>
+                        <span>Kwota</span>
+                    </button>
+                </div>
+                <div class="form-container">
+                    <div id="div-form-treatment" class="cls-fadeable" >
+                        <form th:action="@{/generateVoucher}" th:object="${voucher}" method="post">
+                            <h3>Wybierz zabieg</h3>
+                            <select th:field="*{treatment}">
+                                <option th:each="treatment : ${treatments}" th:value="${treatment}" th:text="${treatment}"></option>
+                            </select>
+                            <h3>Wybierz datę przydatności</h3>
+                            <input type="date" id="expiration-date-treatment"/>
+
+                            <h3>Dla kogo?</h3>
+                            <select name="prefix" id="prefix-treatment">
+                                <option value="Dla Pani">Dla Pani</option>
+                                <option value="Dla Pana">Dla Pana</option>
+                                <option value="Dla Państwa">Dla Państwa</option>
+                                <option value="Dla">Dla</option>
+                            </select>
+                            <input id="input-treatment-receiver" type="text" th:field="*{name}" placeholder="Odbiorca"/>
+
+                            <p style="margin-top: 50px;"><button type="submit">Wygeneruj Voucher na zabieg</button></p>
+                        </form>
+                    </div>
+
+                    <div id="div-form-value" class="cls-fadeable">
+                        <form th:action="@{/generateVoucher}" th:object="${voucher}" method="post">
+                            <h3>Wybierz kwotę</h3>
+                            <div class="button-grid">
+                                <button type="button" class="cls-btn-icon cls-btn-icon-price" name="value" value="200">
+                                    <span>200 PLN</span>
+                                </button>
+                                <button type="button" class="cls-btn-icon cls-btn-icon-price" name="value" value="350">
+                                    <span>350 PLN</span>
+                                </button>
+                                <button type="button" class="cls-btn-icon cls-btn-icon-price" name="value" value="600">
+                                    <span>600 PLN</span>
+                                </button>
+                                <input id="input-custom-price" class="cls-btn-icon cls-btn-icon-price" type="number" name="value" inputmode="decimal" th:field="*{value}"/>
+                                <!--button type="button" id="btn-custom-price" class="cls-btn-icon cls-btn-icon-price" name="value" value="">
+                                    <div class="cls-btn-icon-price-input">
+                                        <input class="btn-with-input" aria-label="Inna kwota" aria-hidden="true" id="input-value-text" type="number" inputmode="decimal"  th:field="*{value}"/>
+                                    </div>
+                                </button-->
+                            </div>
+
+                            <h3>Wybierz datę przydatności</h3>
+                            <input type="date" id="expiration-date-value"/>
+
+                            <h3>Dla kogo?</h3>
+                            <select name="prefix-name" id="prefix-name">
+                                <option value="Dla Pani">Dla Pani</option>
+                                <option value="Dla Pana">Dla Pana</option>
+                                <option value="Dla Państwa">Dla Państwa</option>
+                                <option value="Dla">Dla</option>
+                            </select>
+
+                            <input id="input-value-receiver" type="text" th:field="*{name}"/>
+                            <input id="input-value-price" name="value" th:field="*{value}" style="display: none;"/>
+
+                            <p style="margin-top: 50px;"><button type="submit">Wygeneruj bon</button></p>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://kit.fontawesome.com/24d045adf1.js" crossorigin="anonymous"></script>
+<script>
+    //Animation
+    var btnForm1 = document.getElementById('btn-treatment');
+    var btnForm2 = document.getElementById('btn-value');
+    var form1 = document.getElementById('div-form-treatment');
+    var form2 = document.getElementById('div-form-value');
+    var input1 = document.getElementById('input-value-name');
+    var input2 = document.getElementById('input-value-value');
+    var input3 = document.getElementById('input-treatment-name');
+    var isAnimating = false;
+    currentForm = 0;
+
+    function updateState(showForm1) {
+        if(isAnimating || (showForm1 && currentForm == 1) || (!showForm1 && currentForm == 2)) {
+            return;
+        }
+        isAnimating = true;
+
+        calculateExpirationDate();
+
+        if (showForm1) {
+            //Zabieg
+            currentForm = 1;
+            form1.classList.add('fade-in-right');
+            btnForm1.classList.add('cls-pressed');
+            form1.style.zIndex = 2;
+            form2.style.zIndex = 1;
+            //If opacity of form2 is not 0
+            if(form2.style.opacity != 0) {
+                //Take input
+                if(input1 != null) input1.value = "";
+                if(input2 != null) input2.value = "";
+                form2.classList.add('fade-out-left');
+                btnForm2.classList.remove('cls-pressed');
+            }
+        } else {
+            //Kwota
+            currentForm = 2;
+            form2.classList.add('fade-in-right');
+            btnForm2.classList.add('cls-pressed');
+            form2.style.zIndex = 2;
+            form1.style.zIndex = 1;
+            //If opacity of form1 is not 0
+            if(form1.style.opacity != 0) {
+                //Take input
+                if(input3 != null) input3.value = "";
+                form1.classList.add('fade-out-left');
+                btnForm1.classList.remove('cls-pressed');
+            }
+        }
+
+        // Usuń klasy animacji i odblokuj kolejną animację po zakończeniu obecnej
+        setTimeout(() => {
+            form1.classList.remove('fade-out-left', 'fade-in-right');
+            form2.classList.remove('fade-out-left', 'fade-in-right');
+
+            // Kontrola widoczności - po zakończeniu animacji
+            if(showForm1) {
+                form1.style.opacity = 1; // Ustaw element na widoczny
+                form2.style.opacity = 0; // Ukryj drugi element
+            } else {
+                form2.style.opacity = 1; // Ustaw element na widoczny
+                form1.style.opacity = 0; // Ukryj pierwszy element
+            }
+
+            isAnimating = false;
+        }, 1700); // 1700 ms = czas trwania animacji
+    }
+
+    function calculateExpirationDate() {
+        //Calculate expiration date 6 months from today
+        var today = new Date();
+        var futureDate = new Date(today.setMonth(today.getMonth() + 6));
+        var dd = String(futureDate.getDate()).padStart(2, '0');
+        var mm = String(futureDate.getMonth() + 1).padStart(2, '0'); //January is 0
+        var yyyy = futureDate.getFullYear();
+        var expirationDate = yyyy + '-' + mm + '-' + dd;
+        document.getElementById('expiration-date-value').value = expirationDate;
+        document.getElementById('expiration-date-treatment').value = expirationDate;
+        console.log(expirationDate);
+    }
+
+    // Funkcje do pokazywania formularzy
+    function showForm1() {
+        updateState(true);
+    }
+
+    function showForm2() {
+        updateState(false);
+    }
+
+    function resetCustomPrice() {
+<!--        document.getElementById('input-value-price').value = "";-->
+        document.getElementById('input-custom-price').value = "Inna kwota";
+        document.getElementById('input-custom-price').classList.remove('cls-pressed');
+    }
+
+    function selectPrice() {
+        var buttons = document.getElementsByClassName('cls-btn-icon-price');
+            for (var i = 0; i < buttons.length; i++) {
+                buttons[i].addEventListener('click', function() {
+                    for (var j = 0; j < buttons.length; j++) {
+                        buttons[j].classList.remove('cls-pressed');
+                    }
+                    resetCustomPrice();
+                    this.classList.add('cls-pressed');
+                    document.getElementById('input-value-price').value = this.value;
+                    console.log("value:" + document.getElementById('input-value-price').value);
+                });
+            }
+    }
+
+    btnForm1.addEventListener('click', showForm1);
+    btnForm2.addEventListener('click', showForm2);
+    window.onload = selectPrice;
+</script>
+
+</body>
+</html>
+

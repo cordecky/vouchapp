@@ -30,22 +30,54 @@
                 </div>
                 <div class="form-container">
                     <div id="div-form-treatment" class="cls-fadeable" >
-                        <h3>Voucher na Zabieg</h3>
                         <form th:action="@{/generateVoucher}" th:object="${voucher}" method="post">
-                            <input id="input-treatment-name" type="text" th:field="*{name}" placeholder="Imię klienta"/>
+                            <h3>Wybierz zabieg</h3>
                             <select th:field="*{treatment}">
                                 <option th:each="treatment : ${treatments}" th:value="${treatment}" th:text="${treatment}"></option>
                             </select>
-                            <button type="submit">Wygeneruj Voucher na zabieg</button>
+                            <h3>Wybierz datę przydatności</h3>
+                            <input type="date" id="expiration-date-treatment"/>
+
+                            <h3>Dla kogo?</h3>
+                            <select name="prefix" id="prefix-treatment">
+                                <option value="Dla Pani">Dla Pani</option>
+                                <option value="Dla Pana">Dla Pana</option>
+                                <option value="Dla Państwa">Dla Państwa</option>
+                                <option value="Dla">Dla</option>
+                            </select>
+                            <input id="input-treatment-receiver" type="text" th:field="*{name}" placeholder="Odbiorca"/>
+
+                            <p style="margin-top: 50px;"><button type="submit">Wygeneruj Voucher na zabieg</button></p>
                         </form>
                     </div>
 
                     <div id="div-form-value" class="cls-fadeable">
-                        <h3>Voucher o Wartości</h3>
-                        <form th:action="@{/generateVoucher}" th:object="${voucher}" method="post">
-                            <input id="input-value-name" type="text" th:field="*{name}" placeholder="Imię klienta"/>
-                            <input id="input-value-value" type="number" th:field="*{value}" placeholder="Wartość Vouchera"/>
-                            <button type="submit">Wygeneruj Voucher o wartości</button>
+                        <form id="voucherForm" th:action="@{/generateVoucher}" th:object="${voucher}" method="post">
+                            <h3>Wybierz kwotę</h3>
+                            <div class="button-grid">
+                                <button type="button" class="cls-btn-icon cls-btn-icon-price" data-price="200">200 PLN</button>
+                                <button type="button" class="cls-btn-icon cls-btn-icon-price" data-price="350">350 PLN</button>
+                                <button type="button" class="cls-btn-icon cls-btn-icon-price" data-price="600">600 PLN</button>
+                                <input type="number" id="customPrice" placeholder="Wpisz niestandardową kwotę" th:field="*{customValue}" oninput="clearSelectedPrice();">
+                            </div>
+
+                            <h3>Wybierz datę przydatności</h3>
+                            <input type="date" id="expiration-date-value"/>
+
+                            <h3>Dla kogo?</h3>
+                            <select name="prefix-name" id="prefix-name">
+                                <option value="Dla Pani">Dla Pani</option>
+                                <option value="Dla Pana">Dla Pana</option>
+                                <option value="Dla Państwa">Dla Państwa</option>
+                                <option value="Dla">Dla</option>
+                            </select>
+
+                            <input id="input-value-receiver" type="text" th:field="*{name}"/>
+
+                            <!-- Ukryte pole, które będzie przechowywać wartość wybraną przez przyciski -->
+                            <input type="hidden" id="selectedPrice" name="selectedPrice" th:field="*{selectedValue}">
+
+                            <p style="margin-top: 50px;"><button type="submit">Wygeneruj bon</button></p>
                         </form>
                     </div>
                 </div>
@@ -54,9 +86,9 @@
     </div>
 </div>
 
-
 <script src="https://kit.fontawesome.com/24d045adf1.js" crossorigin="anonymous"></script>
 <script>
+    //Animation
     var btnForm1 = document.getElementById('btn-treatment');
     var btnForm2 = document.getElementById('btn-value');
     var form1 = document.getElementById('div-form-treatment');
@@ -64,14 +96,16 @@
     var input1 = document.getElementById('input-value-name');
     var input2 = document.getElementById('input-value-value');
     var input3 = document.getElementById('input-treatment-name');
-    var isAnimating = false; // zmienna do śledzenia stanu animacji
+    var isAnimating = false;
     currentForm = 0;
 
     function updateState(showForm1) {
-        if(isAnimating) {
+        if(isAnimating || (showForm1 && currentForm == 1) || (!showForm1 && currentForm == 2)) {
             return;
         }
         isAnimating = true;
+
+        calculateExpirationDate();
 
         if (showForm1) {
             //Zabieg
@@ -87,8 +121,6 @@
                 if(input2 != null) input2.value = "";
                 form2.classList.add('fade-out-left');
                 btnForm2.classList.remove('cls-pressed');
-            } else {
-                console.log("form2 opacity is 0");
             }
         } else {
             //Kwota
@@ -103,8 +135,6 @@
                 if(input3 != null) input3.value = "";
                 form1.classList.add('fade-out-left');
                 btnForm1.classList.remove('cls-pressed');
-            } else {
-                console.log("form1 opacity is 0");
             }
         }
 
@@ -122,9 +152,21 @@
                 form1.style.opacity = 0; // Ukryj pierwszy element
             }
 
-
             isAnimating = false;
-        }, 500); // 500 ms = czas trwania animacji
+        }, 1700); // 1700 ms = czas trwania animacji
+    }
+
+    function calculateExpirationDate() {
+        //Calculate expiration date 6 months from today
+        var today = new Date();
+        var futureDate = new Date(today.setMonth(today.getMonth() + 6));
+        var dd = String(futureDate.getDate()).padStart(2, '0');
+        var mm = String(futureDate.getMonth() + 1).padStart(2, '0'); //January is 0
+        var yyyy = futureDate.getFullYear();
+        var expirationDate = yyyy + '-' + mm + '-' + dd;
+        document.getElementById('expiration-date-value').value = expirationDate;
+        document.getElementById('expiration-date-treatment').value = expirationDate;
+        console.log(expirationDate);
     }
 
     // Funkcje do pokazywania formularzy
@@ -136,8 +178,53 @@
         updateState(false);
     }
 
-    btnForm1.addEventListener('click', showForm1);
-    btnForm2.addEventListener('click', showForm2);
+document.querySelectorAll('.cls-btn-icon-price').forEach(function(button) {
+    button.addEventListener('click', function() {
+        // Usuń zaznaczenie z innych przycisków
+        clearPriceSelection();
+
+        // Oznacz ten przycisk jako wybrany
+        this.classList.add('cls-pressed');
+
+        // Zaktualizuj wartość ukrytego pola, usuń wartość z customPrice
+        document.getElementById('selectedPrice').value = this.getAttribute('data-price');
+        document.getElementById('customPrice').value = ''; // Usuń wartość customPrice
+    });
+});
+
+// Funkcja do czyszczenia zaznaczenia przycisków i ukrytego pola
+function clearPriceSelection() {
+    document.querySelectorAll('.cls-btn-icon-price').forEach(function(button) {
+        button.classList.remove('cls-pressed');
+    });
+}
+
+// Funkcja do czyszczenia wybranej kwoty
+function clearSelectedPrice() {
+    document.querySelectorAll('.cls-btn-icon-price').forEach(function(button) {
+        button.classList.remove('cls-pressed'); // Usuń zaznaczenie z przycisków
+    });
+    document.getElementById('selectedPrice').value = ''; // Usuń wartość z wybranej kwoty
+}
+
+// Przechwyć zdarzenie submit formularza
+document.getElementById('voucherForm').addEventListener('submit', function(event) {
+    //event.preventDefault(); // Zatrzymaj standardowe wysyłanie formularza
+
+    // Pobierz wartości z formularza
+    var customPrice = document.getElementById('customPrice').value;
+    var selectedPrice = document.getElementById('selectedPrice').value;
+
+    // Loguj dane w konsoli
+    console.log('Wybrana kwota: ', selectedPrice || 'Brak');
+    console.log('Niestandardowa kwota: ', customPrice || 'Brak');
+    // Tutaj możesz dodać logikę decydującą, która wartość ma być przesłana
+});
+
+
+
+btnForm1.addEventListener('click', showForm1);
+btnForm2.addEventListener('click', showForm2);
 </script>
 
 </body>

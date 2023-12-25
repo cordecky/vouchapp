@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 public class Voucher {
     String name;
     Treatment treatment;
-    Integer value;
+    Integer selectedValue;
+    Integer customValue;
 
 }

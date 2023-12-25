@@ -46,7 +46,9 @@ public class PdfGeneratorSimple implements PdfGenerator {
 
             document.add(new Paragraph("Voucher"));
             document.add(new Paragraph("Dla: " + data.getName()));
-            document.add(new Paragraph("Wartość vouchera: " + data.getValue()));
+            document.add(new Paragraph("Wartość vouchera: " + (
+                    data.getSelectedValue() != null ? data.getSelectedValue() : data.getCustomValue()
+            )));
 
             document.close();
         } catch (Exception e) {
